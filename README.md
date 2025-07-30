@@ -89,6 +89,35 @@ This is a full-featured **Teen Patti** backend server designed to support real-t
 
 ---
 
+## 🔌 Socket.IO Events
+
+Here is a comprehensive list of all the socket events used in the Teen Patti game logic.
+
+| Event Name (en) | Direction | Description | Payload (data) |
+|-----------------|-----------|-------------|----------------|
+| **GUP** | Client → Server | Get User Profile: Fetches the profile information for a specific user. | `{ "user_id": "..." }` |
+| **GTS** | Client → Server | Get Table State: Retrieves the current state of a game table, including players, pot amount, and game status. | `{ "user_id": "...", "tid": "table_id" }` |
+| **JT** | Client → Server | Join Table: Allows a user to join a specific game table. | `{ "user_id": "...", "tid": "table_id" }` |
+| **LT** | Client → Server | Leave Table: Removes a user from their current table. | `{ "user_id": "...", "tid": "table_id" }` |
+| **ST** | Client → Server | See Table / Sit: Moves a player from a waiting or spectator state to an active player seat at the table. | `{ "user_id": "...", "tid": "table_id" }` |
+| **PACK** | Client → Server | Pack / Fold: The player chooses to fold their cards for the current round. | `{ "user_id": "...", "tid": "table_id" }` |
+| **CB** | Client → Server | Chaal / Bet: The player places a bet (chaal). | `{ "user_id": "...", "tid": "table_id", "bv": amount }` (bv = bet value) |
+| **SS** | Client → Server | Start Show: Initiates the "show" phase at the end of a round when only two players remain. | `{ "user_id": "...", "tid": "table_id" }` |
+| **RS** | Client → Server | Request Sideshow: A player requests a "sideshow" with the player who acted before them. | `{ "user_id": "...", "tid": "table_id" }` |
+| **AS** | Client → Server | Action on Sideshow: The other player's response to a sideshow request. | `{ "user_id": "...", "tid": "table_id", "st": "accept/deny" }` |
+| **SL** | Client → Server | Show Last Hand: Triggered at the end of a round to see the cards of the last players. | `{ "user_id": "...", "tid": "table_id" }` |
+| **LPA** | Client → Server | Last Player Action: Fetches the last action taken on the table, often used for syncing state. | `{ "user_id": "...", "tid": "table_id" }` |
+| **STIPS** | Client → Server | Send Tip: Allows a player to send a tip to the dealer. | `{ "user_id": "...", "tid": "table_id", "tip": amount }` |
+| **RTJ** | Client → Server | Re-Join Table: Allows a disconnected player to rejoin their previous table. | `{ "user_id": "...", "tid": "table_id" }` |
+| **DE** | Server → Client | Display Error: Sends a user-facing error message to be displayed on the client. | `{ "msg": "Error message to display" }` |
+| **GTI** | Server → Client | Game Table Info: Broadcasts the full state of the game table after a significant event (e.g., a player joins or leaves). | `{ "tableId": "...", "players": [...], "gameState": "...", "potValue": amount }` |
+| **NT** | Server → Client | New Turn: Announces the start of a new turn and which player is now active. | `{ "activePlayer": "...", "nextPlayer": "...", "countdown": number }` |
+| **UJP** | Server → Client | User Joined Pot: Informs clients that a new user has joined the table and a pot has been created. | `{ "pot": { ... } }` |
+| **CD** | Server → Client | Card Dealing: Broadcasts that cards are being dealt to the players. | `{ "message": "Card dealing..." }` |
+| **Winner** | Server → Client | Announce Winner: Declares the winner of the round, the winning hand, and the pot amount. | `{ "winnerId": "...", "potValue": amount, "winningCards": [...] }` |
+
+---
+
 ## 📦 Installation & Setup
 
 ```bash
